@@ -8,15 +8,15 @@ import { toast } from 'react-toastify';
 function Search() {
   const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState('');
-  const [languages, setLanguages] = useState('');
+  const [languages, setLanguages] = useState([]);
   const [topic, setTopic] = useState('');
   const [copyright, setCopyright] = useState({
     copyrighted: false,
     notCopyrighted: false,
     unknown: false,
   });
-  const [authorsBirthMax, setAuthorsBirthMax] = useState(null);
-  const [authorsDeathMax, setAuthorsDeathMax] = useState(null);
+  const [authorsBirthMax, setAuthorsBirthMax] = useState('');
+  const [authorsDeathMax, setAuthorsDeathMax] = useState('');
 
   const API_URL = 'https://gutendex.com/books/?search=';
 
@@ -47,6 +47,19 @@ function Search() {
 
     if (topic.length > 1) query += '&topic=' + topic;
 
+    //  add authors death/birth year
+
+    if (authorsBirthMax.length > 0)
+      query += '&author_year_start=' + authorsBirthMax;
+    if (authorsDeathMax.length > 0)
+      query += '&author_year_end=' + authorsDeathMax;
+
+    //  add languages
+
+    if (languages.length > 0)
+      query +=
+        '&languages=' + languages.reduce((acc, curr) => acc + ',' + curr);
+
     try {
       setIsLoading(true);
       console.log(query);
@@ -58,12 +71,21 @@ function Search() {
     setIsLoading(false);
   };
 
+  const handleLanguageChange = (e) => {
+    if (e.target.checked) {
+      if (languages.includes(e.target.value)) return;
+      setLanguages([...languages, e.target.value]);
+    }
+    if (!e.target.checked)
+      setLanguages(languages.filter((el) => el !== e.target.value));
+  };
+
   return isLoading ? (
     <Spinner />
   ) : (
     <>
       <header>
-        <h1 className='text-4xl text-center mt-16'>Search for Books</h1>
+        <h1 className='text-4xl text-center mt-16 mb-6'>Search for Books</h1>
       </header>
       <div>
         <form onSubmit={onSubmit}>
@@ -86,8 +108,8 @@ function Search() {
                 <FaSearch className='w-5 h-5' />
               </button>
             </div>
-            <div className='flex flex-wrap w-full md:w-4/5 lg:w-3/5 mt-4 mx-auto'>
-              <article className='collapse collapse-arrow mx-auto mt-2'>
+            <div className='flex flex-wrap w-full xl:w-3/5 2xl:w-2/5 mx-auto grid sm:grid-cols-2 mt-6'>
+              <article className='collapse collapse-arrow mx-auto w-52 mt-2'>
                 <input type='checkbox' />
                 <div className='collapse-title text-xl font-medium'>
                   Languages
@@ -96,81 +118,127 @@ function Search() {
                   <div className='form-control'>
                     <label className='label cursor-pointer'>
                       <span className='label-text'>English</span>
-                      <input type='checkbox' class='checkbox' />
+                      <input
+                        type='checkbox'
+                        className='checkbox'
+                        onChange={handleLanguageChange}
+                        value='en'
+                        checked={languages.includes('en')}
+                      />
                     </label>
                     <label className='label cursor-pointer'>
                       <span className='label-text'>French</span>
-                      <input type='checkbox' class='checkbox' />
+                      <input
+                        type='checkbox'
+                        className='checkbox'
+                        onChange={handleLanguageChange}
+                        value='fr'
+                        checked={languages.includes('fr')}
+                      />
                     </label>
                     <label className='label cursor-pointer'>
                       <span className='label-text'>Polish</span>
-                      <input type='checkbox' class='checkbox' />
+                      <input
+                        type='checkbox'
+                        className='checkbox'
+                        onChange={handleLanguageChange}
+                        value='pl'
+                        checked={languages.includes('pl')}
+                      />
                     </label>
                   </div>
                 </div>
               </article>
-              <article className='collapse collapse-arrow mx-auto mt-2'>
-                <input type='checkbox' />
-                <div className='collapse-title text-xl font-medium'>Topic</div>
-                <div className='collapse-content'>
-                  <input
-                    type='text'
-                    placeholder='Enter topic...'
-                    className='input input-bordered w-full max-w-lg'
-                    value={topic}
-                    onChange={(e) => {
-                      setTopic(e.target.value);
-                    }}
-                  />
-                </div>
-              </article>
-              <article className='collapse collapse-arrow mx-auto mt-2'>
+
+              <article className='collapse collapse-arrow mx-auto w-52 mt-2'>
                 <input type='checkbox' />
                 <div className='collapse-title text-xl font-medium'>
                   Copyright
                 </div>
                 <div className='collapse-content'>
-                  <div className='form-control w-40'>
+                  <div className='form-control'>
                     <label className='label cursor-pointer'>
                       <span className='label-text'>Copyrighted</span>
                       <input
                         type='checkbox'
-                        class='checkbox'
+                        className='checkbox'
                         onChange={() =>
                           setCopyright({
                             ...copyright,
                             copyrighted: !copyright.copyrighted,
                           })
                         }
+                        checked={copyright.copyrighted}
                       />
                     </label>
                     <label className='label cursor-pointer'>
                       <span className='label-text'>Not copyrighted</span>
                       <input
                         type='checkbox'
-                        class='checkbox'
+                        className='checkbox'
                         onChange={() =>
                           setCopyright({
                             ...copyright,
                             notCopyrighted: !copyright.notCopyrighted,
                           })
                         }
+                        checked={copyright.notCopyrighted}
                       />
                     </label>
                     <label className='label cursor-pointer'>
                       <span className='label-text'>Unknown</span>
                       <input
                         type='checkbox'
-                        class='checkbox'
+                        className='checkbox'
                         onChange={() =>
                           setCopyright({
                             ...copyright,
                             unknown: !copyright.unknown,
                           })
                         }
+                        checked={copyright.unknown}
                       />
                     </label>
                   </div>
+                </div>
+              </article>
+              <article className='collapse collapse-arrow mx-auto mt-2 w-52'>
+                <input type='checkbox' />
+                <div className='collapse-title text-xl font-medium'>
+                  Author years range
+                </div>
+                <div className='collapse-content'>
+                  <div className='input-group'>
+                    <input
+                      type='number'
+                      placeholder='Birth'
+                      className='input input-bordered w-full max-w-lg'
+                      onChange={(e) => setAuthorsBirthMax(e.target.value)}
+                      value={authorsBirthMax}
+                    />
+                    <input
+                      type='number'
+                      placeholder='Death'
+                      className='input input-bordered w-full max-w-lg'
+                      onChange={(e) => setAuthorsDeathMax(e.target.value)}
+                      value={authorsDeathMax}
+                    />
+                  </div>
+                </div>
+              </article>
+              <article className='collapse collapse-arrow mx-auto mt-2 w-52'>
+                <input type='checkbox' />
+                <div className='collapse-title text-xl font-medium'>Topic</div>
+                <div className='collapse-content'>
+                  <input
+                    type='text'
+                    placeholder='Book topic...'
+                    className='input input-bordered w-40'
+                    value={topic}
+                    onChange={(e) => {
+                      setTopic(e.target.value);
+                    }}
+                  />
                 </div>
               </article>
             </div>
