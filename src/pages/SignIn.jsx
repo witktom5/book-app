@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 function SignIn() {
-  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const { email, password } = formData;
 
@@ -40,40 +39,41 @@ function SignIn() {
 
   return (
     <>
-      <div>
-        <header>
-          <p>Welcome Back!</p>
-        </header>
-        <main>
-          <form onSubmit={onSubmit}>
-            <input
-              type='email'
-              placeholder='Email'
-              id='email'
-              value={email}
-              onChange={onChange}
-            />
+      <header>
+        <h1 className='text-4xl text-center'>Sign In</h1>
+      </header>
+      <form className='flex pt-10' onSubmit={onSubmit}>
+        <div className='mx-auto flex flex-col gap-2 w-full max-w-sm'>
+          <input
+            type='email'
+            className='input input-bordered'
+            placeholder='Email'
+            id='email'
+            value={email}
+            onChange={onChange}
+          />
+          <input
+            type='password'
+            placeholder='Password'
+            className='input input-bordered w-full max-w-md'
+            id='password'
+            value={password}
+            onChange={onChange}
+          />
 
-            <div>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                placeholder='Password'
-                id='password'
-                value={password}
-                onChange={onChange}
-              />
+          <div className='flex w-full max-w-sm items-center justify-between mt-3'>
+            <button className='btn btn-primary'>Sign In</button>
+            <div className='flex flex-col items-end'>
+              <Link className='text-slate-500' to='/sign-up'>
+                Sign Up Instead
+              </Link>
+              <Link className='text-slate-500' to='/forgot-password'>
+                Forgot Password
+              </Link>
             </div>
-            <Link to='/forgot-password'>Forgot Password</Link>
-
-            <div>
-              <p>Sign In</p>
-              <button>Go</button>
-            </div>
-          </form>
-
-          <Link to='/sign-up'>Sign Up Instead</Link>
-        </main>
-      </div>
+          </div>
+        </div>
+      </form>
     </>
   );
 }

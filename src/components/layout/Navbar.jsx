@@ -8,7 +8,7 @@ import MenuButton from '../MenuButton';
 import Spinner from '../Spinner';
 
 function Navbar() {
-  const { loggedIn, loading, setLoggedIn } = useAuthStatus();
+  const { loggedIn, loading, setLoggedIn, username } = useAuthStatus();
   const navigate = useNavigate();
   const auth = getAuth();
   const onLogout = () => {
@@ -28,41 +28,49 @@ function Navbar() {
       <div className='navbar lg:w-4/5'>
         <div className='flex-none'></div>
         <DropdownMenu>
-          <MenuButton to='/' text='Home' />
+          <MenuButton to='/' text='Search' />
           {loggedIn ? (
-            <button
-              onClick={onLogout}
-              className='btn btn-ghost normal-case text-lg flex gap-2'
-            >
-              Log Out
-            </button>
-          ) : (
             <>
-              <MenuButton to='/sign-up' text='Sign Up' />
-              <MenuButton to='/sign-in' text='Sign In' />
-            </>
-          )}
-        </DropdownMenu>
-        <div className='hidden lg:flex gap-5'>
-          <MenuButton to='/' text='Home' />
-        </div>
-        <div className='ml-auto'>
-          <div className='hidden lg:flex gap-5'>
-            {loggedIn ? (
+              <MenuButton to='/profile' text={`Profile (${username})`} />
               <button
                 onClick={onLogout}
                 className='btn btn-ghost normal-case text-lg flex gap-2'
               >
                 Log Out
               </button>
+            </>
+          ) : (
+            <>
+              <MenuButton to='/sign-in' text='Sign In' />
+              <MenuButton to='/sign-up' text='Sign Up' />
+            </>
+          )}
+        </DropdownMenu>
+        <div className='hidden lg:flex gap-5'>
+          <MenuButton to='/' text='Search' />
+        </div>
+        <div className='ml-auto'>
+          <div className='hidden lg:flex gap-5'>
+            {loggedIn ? (
+              <>
+                <MenuButton to='/profile' text={`Profile (${username})`} />
+                <button
+                  onClick={onLogout}
+                  className='btn btn-ghost normal-case text-lg flex gap-2'
+                >
+                  Log Out
+                </button>
+              </>
             ) : (
               <>
-                <MenuButton to='/sign-up' text='Sign Up' />
                 <MenuButton to='/sign-in' text='Sign In' />
+                <MenuButton to='/sign-up' text='Sign Up' />
               </>
             )}
           </div>
-          <ColorSchemeToggler />
+          <div className='ml-5'>
+            <ColorSchemeToggler />
+          </div>
         </div>
       </div>
     </nav>

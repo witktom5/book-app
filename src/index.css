@@ -9,6 +9,7 @@ body {
 }
 
 main {
+  padding-block: 3em;
   padding-inline: clamp(0.7em, 3vw, 4em);
 }
 
