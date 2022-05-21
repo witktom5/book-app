@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import SearchContext from '../context/SearchContext';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import axios from 'axios';
@@ -6,6 +7,8 @@ import Spinner from '../components/Spinner';
 import { toast } from 'react-toastify';
 
 function Search() {
+  const { setSearchData, searchData, setSearchText } =
+    useContext(SearchContext);
   const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [languages, setLanguages] = useState([]);
@@ -21,6 +24,10 @@ function Search() {
   const API_URL = 'https://gutendex.com/books/?search=';
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (searchData && searchData.length > 1) navigate('/results');
+  });
 
   // fetch books from api
 
@@ -62,9 +69,14 @@ function Search() {
 
     try {
       setIsLoading(true);
-      console.log(query);
       const res = await axios.get(API_URL + query);
-      console.log(res.data);
+
+      if (res.data.results.length < 1) toast.info('No results found');
+
+      //  update context
+
+      setSearchText(search);
+      setSearchData(res.data.results);
     } catch (error) {
       console.log(error);
     }
