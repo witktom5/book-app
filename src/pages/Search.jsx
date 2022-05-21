@@ -1,10 +1,10 @@
 import { useState, useContext, useEffect } from 'react';
-import SearchContext from '../context/SearchContext';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
-import axios from 'axios';
-import Spinner from '../components/Spinner';
 import { toast } from 'react-toastify';
+import axios from 'axios';
+import SearchContext from '../context/SearchContext';
+import Spinner from '../components/Spinner';
 
 function Search() {
   const { setSearchData, searchData, setSearchText } =
@@ -121,7 +121,7 @@ function Search() {
               </button>
             </div>
             <div className='flex flex-wrap w-full xl:w-3/5 2xl:w-2/5 mx-auto grid sm:grid-cols-2 mt-6'>
-              <article className='collapse collapse-arrow mx-auto w-52 mt-2'>
+              <article className='collapse collapse-arrow mx-auto w-60 mt-2'>
                 <input type='checkbox' />
                 <div className='collapse-title text-xl font-medium'>
                   Languages
@@ -139,6 +139,16 @@ function Search() {
                       />
                     </label>
                     <label className='label cursor-pointer'>
+                      <span className='label-text'>Finnish</span>
+                      <input
+                        type='checkbox'
+                        className='checkbox'
+                        onChange={handleLanguageChange}
+                        value='fi'
+                        checked={languages.includes('fi')}
+                      />
+                    </label>
+                    <label className='label cursor-pointer'>
                       <span className='label-text'>French</span>
                       <input
                         type='checkbox'
@@ -146,6 +156,17 @@ function Search() {
                         onChange={handleLanguageChange}
                         value='fr'
                         checked={languages.includes('fr')}
+                      />
+                    </label>
+
+                    <label className='label cursor-pointer'>
+                      <span className='label-text'>German</span>
+                      <input
+                        type='checkbox'
+                        className='checkbox'
+                        onChange={handleLanguageChange}
+                        value='de'
+                        checked={languages.includes('de')}
                       />
                     </label>
                     <label className='label cursor-pointer'>
@@ -158,11 +179,21 @@ function Search() {
                         checked={languages.includes('pl')}
                       />
                     </label>
+                    <label className='label cursor-pointer'>
+                      <span className='label-text'>Spanish</span>
+                      <input
+                        type='checkbox'
+                        className='checkbox'
+                        onChange={handleLanguageChange}
+                        value='es'
+                        checked={languages.includes('es')}
+                      />
+                    </label>
                   </div>
                 </div>
               </article>
 
-              <article className='collapse collapse-arrow mx-auto w-52 mt-2'>
+              <article className='collapse collapse-arrow mx-auto w-60 mt-2'>
                 <input type='checkbox' />
                 <div className='collapse-title text-xl font-medium'>
                   Copyright
@@ -214,13 +245,13 @@ function Search() {
                   </div>
                 </div>
               </article>
-              <article className='collapse collapse-arrow mx-auto mt-2 w-52'>
+              <article className='collapse collapse-arrow mx-auto mt-2 w-60'>
                 <input type='checkbox' />
                 <div className='collapse-title text-xl font-medium'>
                   Author years range
                 </div>
                 <div className='collapse-content'>
-                  <div className='input-group'>
+                  <div className='input-group mt-2'>
                     <input
                       type='number'
                       placeholder='Birth'
@@ -238,10 +269,10 @@ function Search() {
                   </div>
                 </div>
               </article>
-              <article className='collapse collapse-arrow mx-auto mt-2 w-52'>
+              <article className='collapse collapse-arrow mx-auto mt-2 w-60'>
                 <input type='checkbox' />
                 <div className='collapse-title text-xl font-medium'>Topic</div>
-                <div className='collapse-content'>
+                <div className='collapse-content pt-2'>
                   <input
                     type='text'
                     placeholder='Book topic...'
