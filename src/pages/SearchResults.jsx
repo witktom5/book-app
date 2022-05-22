@@ -55,18 +55,21 @@ function SearchResults() {
   return isLoading ? (
     <Spinner />
   ) : (
-    searchData && (
+    searchData.results && searchData.results.length > 0 && (
       <>
         <header>
           <h1 className='text-4xl text-center mt-8 mb-2'>
-            Search: <span className='text-slate-600'>{searchText}</span>
+            You've searched for:{' '}
+            <span className='text-slate-500'>{searchText}</span>
           </h1>
         </header>
         <h2 className='text-center text-xl mb-6'>
           {searchData.count > 0
             ? searchData.count +
-              ` Book${searchData.count === 1 ? '' : 's'} found`
-            : 'No Books found'}
+              ` book${
+                searchData.count === 1 ? '' : 's'
+              } found - page ${searchPage}`
+            : 'No books found'}
         </h2>
 
         <section className='my-20 grid md:grid-cols-2 gap-5 lg:grid-cols-3 mx-auto'>
