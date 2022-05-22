@@ -7,7 +7,7 @@ import SearchContext from '../context/SearchContext';
 import Spinner from '../components/Spinner';
 
 function Search() {
-  const { setSearchData, searchData, setSearchText } =
+  const { setSearchData, searchData, setSearchText, setSearchPage } =
     useContext(SearchContext);
   const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState('');
@@ -26,7 +26,8 @@ function Search() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (searchData && searchData.length > 1) navigate('/results');
+    if (searchData.results && searchData.results.length > 0)
+      navigate('/results');
   });
 
   // fetch books from api
@@ -76,7 +77,8 @@ function Search() {
       //  update context
 
       setSearchText(search);
-      setSearchData(res.data.results);
+      setSearchData(res.data);
+      setSearchPage(1);
     } catch (error) {
       console.log(error);
     }
