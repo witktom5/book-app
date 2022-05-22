@@ -25,7 +25,7 @@ function Navbar() {
   return loading ? (
     <Spinner />
   ) : (
-    <nav className='bg-primary text-neutral-content bg-opacity-80 fixed w-full flex justify-center z-50'>
+    <nav className='bg-neutral text-primary-content bg-opacity-80 fixed w-full flex justify-center z-50'>
       <div className='navbar lg:w-4/5'>
         <div className='flex-none'></div>
         <DropdownMenu>

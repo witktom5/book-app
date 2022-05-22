@@ -90,13 +90,13 @@ function SearchResult({
         </h3>
       </div>
       <div className='card-body'>
-        <p>
+        <div>
           <strong>Author(s): </strong>
           {authors.length > 0
-            ? authors.map((author) => (
-                <>
+            ? authors.map((author, i) => (
+                <div key={i}>
                   <p>
-                    <strong className='bg-primary bg-opacity-40 px-1 -ml-1'>
+                    <strong className='underline underline-offset-2 px-1 -ml-1'>
                       {author.name ? author.name : 'Unknown'}
                     </strong>
                   </p>
@@ -108,10 +108,10 @@ function SearchResult({
                     <strong>Death: </strong>
                     {author.death_year ? author.death_year : 'Unknown/NA'}
                   </p>
-                </>
+                </div>
               ))
             : 'Unknown'}
-        </p>
+        </div>
         <p>
           <strong>Subjects: </strong>
           {subjects.length > 0 ? subjects.join(', ') : 'Unknown'}

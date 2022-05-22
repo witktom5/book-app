@@ -17,7 +17,12 @@ function Footer() {
           </p>
         </div>
         <div className='gap-3 ml-auto opacity-75 flex flex-col sm:flex-row'>
-          <p>Some footer stuff</p>
+          <p>
+            <a href='https://www.gutenberg.org/'>Project Gutenberg</a>
+          </p>
+          <p>
+            <a href='https://gutendex.com/'>Gutendex API</a>
+          </p>
         </div>
       </div>
     </footer>

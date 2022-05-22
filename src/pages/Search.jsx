@@ -79,7 +79,6 @@ function Search() {
       setSearchText(search);
       setSearchData(res.data);
       setSearchPage(1);
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -257,14 +256,14 @@ function Search() {
                   <div className='input-group mt-2'>
                     <input
                       type='number'
-                      placeholder='Birth'
+                      placeholder='From'
                       className='input input-bordered w-full max-w-lg'
                       onChange={(e) => setAuthorsBirthMax(e.target.value)}
                       value={authorsBirthMax}
                     />
                     <input
                       type='number'
-                      placeholder='Death'
+                      placeholder='To'
                       className='input input-bordered w-full max-w-lg'
                       onChange={(e) => setAuthorsDeathMax(e.target.value)}
                       value={authorsDeathMax}
