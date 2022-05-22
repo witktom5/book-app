@@ -132,7 +132,7 @@ function SearchResult({
         </p>
 
         <div className='card-actions mt-5 w-full'>
-          {!isFavourited && (
+          {!isFavourited && auth.currentUser && (
             <button
               onClick={addToFavourites}
               className='btn btn-success flex w-full'
@@ -140,7 +140,7 @@ function SearchResult({
               Add to Favourites
             </button>
           )}
-          {isFavourited && (
+          {isFavourited && auth.currentUser && (
             <button
               onClick={removeFromFavourites}
               className='btn btn-error flex w-full'
