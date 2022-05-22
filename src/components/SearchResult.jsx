@@ -35,11 +35,15 @@ function SearchResult({
 
   useEffect(() => {
     const checkFavourited = async () => {
-      const userRef = doc(db, 'users', auth.currentUser.uid);
-      const docSnap = await getDoc(userRef);
-      const data = docSnap.data();
-      const match = data.favourites.find((el) => el.title === title);
-      if (match) setIsFavourited(true);
+      try {
+        const userRef = doc(db, 'users', auth.currentUser.uid);
+        const docSnap = await getDoc(userRef);
+        const data = docSnap.data();
+        const match = data.favourites.find((el) => el.title === title);
+        if (match) setIsFavourited(true);
+      } catch (error) {
+        console.log(error);
+      }
     };
     if (auth.currentUser) checkFavourited();
   });
@@ -48,24 +52,32 @@ function SearchResult({
 
   const addToFavourites = async () => {
     const userRef = doc(db, 'users', auth.currentUser.uid);
-    await updateDoc(userRef, {
-      favourites: arrayUnion(book),
-    });
-    setIsFavourited(true);
-    const bookTitle = title.length < 50 ? title : title.slice(0, 49) + '...';
-    toast.success(`Added ${bookTitle} to favourites`);
+    try {
+      await updateDoc(userRef, {
+        favourites: arrayUnion(book),
+      });
+      setIsFavourited(true);
+      const bookTitle = title.length < 50 ? title : title.slice(0, 49) + '...';
+      toast.success(`Added ${bookTitle} to favourites`);
+    } catch (error) {
+      toast.error('Something went wrong with adding to favorites');
+    }
   };
 
   //  Remove book from favourites
 
   const removeFromFavourites = async () => {
     const userRef = doc(db, 'users', auth.currentUser.uid);
-    await updateDoc(userRef, {
-      favourites: arrayRemove(book),
-    });
-    setIsFavourited(false);
-    const bookTitle = title.length < 50 ? title : title.slice(0, 49) + '...';
-    toast.info(`Removed ${bookTitle} from favourites`);
+    try {
+      await updateDoc(userRef, {
+        favourites: arrayRemove(book),
+      });
+      setIsFavourited(false);
+      const bookTitle = title.length < 50 ? title : title.slice(0, 49) + '...';
+      toast.info(`Removed ${bookTitle} from favourites`);
+    } catch (error) {
+      toast.error('Something went wrong with removing from favorites');
+    }
   };
 
   return (
@@ -103,14 +115,20 @@ function SearchResult({
           {copyright === null && 'Unknown'}
         </p>
 
-        <div className='card-actions justify-end mt-3'>
+        <div className='card-actions mt-5 w-full'>
           {!isFavourited && (
-            <button onClick={addToFavourites} className='btn btn-success'>
+            <button
+              onClick={addToFavourites}
+              className='btn btn-success flex w-full'
+            >
               Add to Favourites
             </button>
           )}
           {isFavourited && (
-            <button onClick={removeFromFavourites} className='btn btn-error'>
+            <button
+              onClick={removeFromFavourites}
+              className='btn btn-error flex w-full'
+            >
               Remove from Favourites
             </button>
           )}
@@ -119,7 +137,7 @@ function SearchResult({
               href={text}
               target='blank'
               rel='noreferred'
-              className='btn btn-info'
+              className='btn btn-info flex w-full'
             >
               Read Online
             </a>

@@ -62,6 +62,13 @@ function SearchResults() {
             <span className='text-slate-500'>{searchText}</span>
           </h1>
         </header>
+
+        <button
+          onClick={onClickBack}
+          className='btn btn-outline btn-sm flex gap-2 mb-7 mx-auto mt-4'
+        >
+          <FaArrowLeft /> Search Again
+        </button>
         <h2 className='text-center text-xl mb-6'>
           {searchData.count > 0
             ? searchData.count +
@@ -71,7 +78,7 @@ function SearchResults() {
             : 'No books found'}
         </h2>
 
-        <section className='my-20 grid md:grid-cols-2 gap-5 lg:grid-cols-3 mx-auto'>
+        <section className='my-20 grid lg:grid-cols-2 gap-10 2xl:grid-cols-3 mx-auto'>
           {searchData.results.map((result, i) => (
             <SearchResult
               key={i}
@@ -85,13 +92,6 @@ function SearchResults() {
             />
           ))}
         </section>
-
-        <button
-          onClick={onClickBack}
-          className='btn btn-outline btn-sm flex gap-2 mb-7 mx-auto'
-        >
-          <FaArrowLeft /> Search Again
-        </button>
 
         <div className='btn-group mt-auto'>
           <button

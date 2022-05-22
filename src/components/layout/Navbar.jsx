@@ -1,4 +1,4 @@
-import { useNavigate, useEffect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuthStatus } from '../../hooks/useAuthStatus';
 import { getAuth } from 'firebase/auth';
 import { toast } from 'react-toastify';
