@@ -8,7 +8,7 @@ import SearchResult from '../components/SearchResult';
 function Profile() {
   const [userFavourites, setUserFavourites] = useState([]);
   //  Fetch favourites
-
+  const auth = getAuth();
   useEffect(() => {
     const fetchFavourites = async () => {
       try {
@@ -16,14 +16,14 @@ function Profile() {
         const docSnap = await getDoc(userRef);
         const { favourites } = docSnap.data();
         setUserFavourites(favourites);
+        console.log(favourites);
       } catch (error) {
         console.log(error);
       }
     };
     fetchFavourites();
-  }, []);
+  }, [auth.currentUser.uid]);
 
-  const auth = getAuth();
   const { username } = useAuthStatus();
 
   return (

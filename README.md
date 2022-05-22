@@ -1,6 +1,6 @@
 # Book App
 
-[Live version]()
+[Live version](https://gutenberg-book-app.netlify.app/)
 
 ## Overview
 
