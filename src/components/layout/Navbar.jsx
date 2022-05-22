@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useEffect } from 'react-router-dom';
 import { useAuthStatus } from '../../hooks/useAuthStatus';
 import { getAuth } from 'firebase/auth';
 import { toast } from 'react-toastify';
@@ -8,14 +8,15 @@ import MenuButton from '../MenuButton';
 import Spinner from '../Spinner';
 
 function Navbar() {
-  const { loggedIn, loading, setLoggedIn, username } = useAuthStatus();
   const navigate = useNavigate();
   const auth = getAuth();
-  const onLogout = () => {
+  const { loggedIn, loading, setLoggedIn } = useAuthStatus();
+
+  const onLogout = async () => {
     if (!loggedIn) {
-      return toast.info('You are not logged in currently');
+      return toast.info('You are currently not logged in');
     }
-    auth.signOut();
+    await auth.signOut();
     toast.info('You have been logged out');
     setLoggedIn(false);
     navigate('/');
@@ -31,7 +32,7 @@ function Navbar() {
           <MenuButton to='/' text='Search' />
           {loggedIn ? (
             <>
-              <MenuButton to='/profile' text={`Profile (${username})`} />
+              <MenuButton to='/profile' text='Profile' />
               <button
                 onClick={onLogout}
                 className='btn btn-ghost normal-case text-lg flex gap-2'
@@ -53,7 +54,7 @@ function Navbar() {
           <div className='hidden lg:flex gap-5'>
             {loggedIn ? (
               <>
-                <MenuButton to='/profile' text={`Profile (${username})`} />
+                <MenuButton to='/profile' text='Profile' />
                 <button
                   onClick={onLogout}
                   className='btn btn-ghost normal-case text-lg flex gap-2'

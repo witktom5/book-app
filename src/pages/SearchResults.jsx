@@ -20,7 +20,6 @@ function SearchResults() {
 
   useEffect(() => {
     if (!searchData || searchData.length === 0) navigate('/');
-    console.log(searchData);
   }, [navigate, searchData]);
 
   const onClickBack = () => {
@@ -82,6 +81,7 @@ function SearchResults() {
               subjects={result.subjects}
               copyright={result.copyright}
               bookshelves={result.bookshelves}
+              text={result.formats['text/html']}
             />
           ))}
         </section>

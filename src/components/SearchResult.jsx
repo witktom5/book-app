@@ -1,3 +1,15 @@
+import { useState, useEffect } from 'react';
+import {
+  updateDoc,
+  doc,
+  getDoc,
+  arrayRemove,
+  arrayUnion,
+} from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { db } from '../firebase/firebase.config';
+import { toast } from 'react-toastify';
+
 function SearchResult({
   title,
   authors,
@@ -5,7 +17,57 @@ function SearchResult({
   copyright,
   languages,
   subjects,
+  text,
 }) {
+  const book = {
+    title,
+    authors,
+    bookshelves,
+    copyright,
+    languages,
+    subjects,
+    text,
+  };
+  const auth = getAuth();
+  const [isFavourited, setIsFavourited] = useState(false);
+
+  //  Check if book is in favourites
+
+  useEffect(() => {
+    const checkFavourited = async () => {
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      const docSnap = await getDoc(userRef);
+      const data = docSnap.data();
+      const match = data.favourites.find((el) => el.title === title);
+      if (match) setIsFavourited(true);
+    };
+    if (auth.currentUser) checkFavourited();
+  });
+
+  //  Add book to favourites
+
+  const addToFavourites = async () => {
+    const userRef = doc(db, 'users', auth.currentUser.uid);
+    await updateDoc(userRef, {
+      favourites: arrayUnion(book),
+    });
+    setIsFavourited(true);
+    const bookTitle = title.length < 50 ? title : title.slice(0, 49) + '...';
+    toast.success(`Added ${bookTitle} to favourites`);
+  };
+
+  //  Remove book from favourites
+
+  const removeFromFavourites = async () => {
+    const userRef = doc(db, 'users', auth.currentUser.uid);
+    await updateDoc(userRef, {
+      favourites: arrayRemove(book),
+    });
+    setIsFavourited(false);
+    const bookTitle = title.length < 50 ? title : title.slice(0, 49) + '...';
+    toast.info(`Removed ${bookTitle} from favourites`);
+  };
+
   return (
     <div className='card bg-base-200 shadow-lg'>
       <div className='card-body bg-base-300'>
@@ -23,7 +85,7 @@ function SearchResult({
             : 'Unknown'}
         </p>
         <p>
-          <strong>Subjects(s): </strong>
+          <strong>Subjects: </strong>
           {subjects.length > 0 ? subjects.join(', ') : 'Unknown'}
         </p>
         <p>
@@ -41,8 +103,27 @@ function SearchResult({
           {copyright === null && 'Unknown'}
         </p>
 
-        <div className='card-actions justify-end'>
-          <button className='btn btn-primary'>Buy Now</button>
+        <div className='card-actions justify-end mt-3'>
+          {!isFavourited && (
+            <button onClick={addToFavourites} className='btn btn-success'>
+              Add to Favourites
+            </button>
+          )}
+          {isFavourited && (
+            <button onClick={removeFromFavourites} className='btn btn-error'>
+              Remove from Favourites
+            </button>
+          )}
+          {text && text.length > 0 && (
+            <a
+              href={text}
+              target='blank'
+              rel='noreferred'
+              className='btn btn-info'
+            >
+              Read Online
+            </a>
+          )}
         </div>
       </div>
     </div>

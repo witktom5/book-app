@@ -11,7 +11,7 @@ import { db } from '../firebase/firebase.config';
 
 function SignUp() {
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
     email: '',
     password: '',
   });
@@ -37,12 +37,14 @@ function SignUp() {
         password
       );
       const user = userCredential.user;
-      updateProfile(auth.currentUser, {
+
+      await updateProfile(auth.currentUser, {
         displayName: username,
       });
 
       const formDataCopy = { ...formData };
       delete formDataCopy.password;
+      formDataCopy.favourites = [];
       formDataCopy.timestamp = serverTimestamp();
 
       await setDoc(doc(db, 'users', user.uid), formDataCopy);
@@ -64,7 +66,7 @@ function SignUp() {
             type='text'
             className='input input-bordered'
             placeholder='Username'
-            id='name'
+            id='username'
             value={username}
             onChange={onChange}
           />
