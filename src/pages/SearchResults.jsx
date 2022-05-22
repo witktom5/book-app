@@ -78,7 +78,7 @@ function SearchResults() {
             : 'No books found'}
         </h2>
 
-        <section className='my-20 grid lg:grid-cols-2 gap-10 2xl:grid-cols-3 mx-auto'>
+        <section className='my-20 grid lg:grid-cols-2 gap-10 max-w-7xl mx-auto'>
           {searchData.results.map((result, i) => (
             <SearchResult
               key={i}

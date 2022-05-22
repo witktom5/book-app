@@ -93,7 +93,23 @@ function SearchResult({
         <p>
           <strong>Author(s): </strong>
           {authors.length > 0
-            ? authors.map((author) => author.name).join(' ')
+            ? authors.map((author) => (
+                <>
+                  <p>
+                    <strong className='bg-primary bg-opacity-40 px-1 -ml-1'>
+                      {author.name ? author.name : 'Unknown'}
+                    </strong>
+                  </p>
+                  <p>
+                    <strong>Birth: </strong>
+                    {author.birth_year ? author.birth_year : 'Unknown/NA'}
+                  </p>
+                  <p>
+                    <strong>Death: </strong>
+                    {author.death_year ? author.death_year : 'Unknown/NA'}
+                  </p>
+                </>
+              ))
             : 'Unknown'}
         </p>
         <p>
@@ -102,7 +118,7 @@ function SearchResult({
         </p>
         <p>
           <strong>Bookshelves: </strong>
-          {bookshelves.length > 0 ? bookshelves.join(', ') : 'Unknown'}
+          {bookshelves.length > 0 ? bookshelves.join(', ') : 'None'}
         </p>
         <p>
           <strong>Languages: </strong>

@@ -79,6 +79,7 @@ function Search() {
       setSearchText(search);
       setSearchData(res.data);
       setSearchPage(1);
+      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
