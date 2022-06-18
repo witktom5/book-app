@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -20,6 +20,7 @@ function Search() {
   });
   const [authorsBirthMax, setAuthorsBirthMax] = useState('');
   const [authorsDeathMax, setAuthorsDeathMax] = useState('');
+  const hEl = useRef(null);
 
   const API_URL = 'https://gutendex.com/books/?search=';
 
@@ -34,6 +35,7 @@ function Search() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    hEl.current.textContent += '1';
     if (search.length < 3)
       return toast.info('You must enter at least 3 characters');
 
@@ -99,7 +101,9 @@ function Search() {
   ) : (
     <>
       <header>
-        <h1 className='text-4xl text-center mt-16 mb-6'>Search for Books</h1>
+        <h1 ref={hEl} className='text-4xl text-center mt-16 mb-6'>
+          Search for Books
+        </h1>
       </header>
       <div>
         <form onSubmit={onSubmit}>
