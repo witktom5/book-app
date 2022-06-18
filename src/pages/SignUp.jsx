@@ -93,9 +93,6 @@ function SignUp() {
               <Link className='text-slate-500' to='/sign-in'>
                 Sign In Instead
               </Link>
-              <Link className='text-slate-500' to='/forgot-password'>
-                Forgot Password
-              </Link>
             </div>
           </div>
         </div>
